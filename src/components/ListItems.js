@@ -21,6 +21,11 @@ const styles = StyleSheet.create({
     list: {
         paddingTop: 16,
         paddingHorizontal: 8,
+        marginBottom: 8,
+        borderColor: '#FFF',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 5,
     },
 });
 

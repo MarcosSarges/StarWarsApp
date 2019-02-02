@@ -5,7 +5,7 @@ import Details from './screens/Details';
 export default class App extends Component {
   render() {
     return (
-      <Details url="Marcos" />
+      <Home />
     );
   }
 }

@@ -12,7 +12,7 @@ class Item extends Component {
                 style={styles.cardTouchableOpacity}
             >
                 <Image source={C3PO} style={{ width: 80, height: 80, margin: 8 }} />
-                <Text style={{ color: '#fff' }} >
+                <Text style={{ color: '#fff', fontSize: 16, margin: 8 }} >
                     {this.props.name}
                 </Text>
             </TouchableOpacity>
@@ -28,10 +28,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 8,
         marginBottom: 8,
-        borderColor: '#FFF',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderRadius: 5,
     }
 });
 

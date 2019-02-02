@@ -6,9 +6,11 @@ import {
     View,
     Image,
     Text,
+    Alert,
     ActivityIndicator
 } from 'react-native';
-
+//services
+import swapi from './../services/swapi';
 //imagem
 import C3PO from './../imgs/c3-po.png';
 
@@ -20,11 +22,22 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             text: '',
-            loading: false
+            loading: false,
+            data: {}
         };
+    }
+
+    fild = async (name) => {
+        const res = await swapi.get('/people/', { search: `${name}` });
+        if (res.data.count > 0) {
+            this.setState({ data: res.data, loading: false });
+        } else {
+            Alert.alert('Error',
+                'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
+            this.setState({ text: '', data: [], loading: false });
+        }
     }
 
     render() {
@@ -36,31 +49,36 @@ class Home extends Component {
                     <TextInput
                         onSubmitEditing={(event) => {
                             this.setState({
-                                text: event.nativeEvent.text
+                                text: event.nativeEvent.text,
+                                loading: true
                             });
+                            this.fild(event.nativeEvent.text);
                         }}
                         style={styles.textInput}
                         placeholderTextColor='#CCC'
                         placeholder='Digite o nome do personagem'
+                        onChange={(event) => {
+                            if (event.nativeEvent.text === '') {
+                                this.setState({ text: event.nativeEvent.text, loading: false });
+                            }
+                        }}
                     />
                 </View>
-                {/*
                 <View style={styles.boxImg}>
                     {
-                        this.state.text === '' ?
+                        this.state.text === '' && !this.state.loading ?
                             <View style={{ alignItems: 'center' }}>
                                 <Image source={C3PO} style={styles.imgC3PO} />
                                 <Text style={{ color: '#FFF', fontSize: 16, textAlign: 'center' }}>
-                                    Procure por um personagem do StarWars e descubra 
+                                    Procure por um personagem do StarWars e descubra
                                     mais sobre nosso universo.
                                 </Text>
-                            </View> :
-                            <ActivityIndicator size='large' color='#FFF' />
+                            </View> : this.state.loading ?
+                                <ActivityIndicator size='large' color='#FFF' /> :
+                                <ListItems array={this.state.data.results} />
                     }
 
                 </View>
-                */}
-                <ListItems array={[{ 'name': 'a' }, { 'name': 'b' }, { 'name': 'c' }, { 'name': 'x' }, { 'name': 'k' }]} />
             </View >
         );
     }
@@ -87,11 +105,12 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     boxImg: {
-        alignItems: 'center',
-        padding: 10,
-        marginTop: 110
+        alignItems: 'stretch',
+        padding: 16,
+        //marginTop: 110
     },
     imgC3PO: {
+        alignSelf: 'center',
         height: 256,
         width: 256
     }
