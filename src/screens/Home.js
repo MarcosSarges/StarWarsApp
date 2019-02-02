@@ -14,6 +14,7 @@ import C3PO from './../imgs/c3-po.png';
 
 //componentes
 import ListItems from '../components/ListItems';
+import TitleTopBar from '../components/TitleTopBar';
 
 class Home extends Component {
 
@@ -31,9 +32,7 @@ class Home extends Component {
             <View style={styles.view}>
                 <StatusBar hidden />
                 <View style={styles.topBar}>
-                    <Text style={styles.titleTopBar}>
-                        Star Wars APP
-                    </Text>
+                    <TitleTopBar title="Star Wars APP" />
                     <TextInput
                         onSubmitEditing={(event) => {
                             this.setState({
@@ -76,13 +75,6 @@ const styles = StyleSheet.create({
     topBar: {
         justifyContent: 'center',
         alignItems: 'stretch'
-    },
-    titleTopBar: {
-        marginTop: 20,
-        color: '#FFDE06',
-        fontSize: 40,
-        fontFamily: 'Starjedi',
-        textAlign: 'center'
     },
     textInput: {
         textAlign: 'center',

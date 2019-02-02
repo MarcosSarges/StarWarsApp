@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Text, View, StatusBar, StyleSheet } from 'react-native';
 
+//componente
+import TitleTopBar from './../components/TitleTopBar';
 class Details extends Component {
 
     render() {
         return (
             <View style={styles.view}>
                 <StatusBar hidden />
-                <View>
-                    <Text style={styles.title}>{this.props.name}</Text>
-                </View>
+                <TitleTopBar title={this.props.name} />
+               
             </View>
         );
     }
@@ -20,6 +21,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000',
     },
+    title: {
+        color: '#FFDE06',
+
+    }
 });
 
 export default Details;
