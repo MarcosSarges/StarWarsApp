@@ -8,6 +8,7 @@ class Item extends Component {
         return (
             <Text style={{ color: '#fff' }} >
                 {this.props.text}
+                
             </Text>
         );
     }

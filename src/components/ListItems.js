@@ -10,6 +10,7 @@ class ListItems extends Component {
         return (
             <ScrollView>
                 {this.props.array.map((el) => (
+                    
                     <Item key={el.name} text={el.name} />
                 ))}
             </ScrollView>
