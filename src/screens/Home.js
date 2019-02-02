@@ -61,7 +61,7 @@ class Home extends Component {
 
                 </View>
                 */}
-                <ListItems array={[{ 'name': 'a' }, { 'name': 'b' }, { 'name': 'c' }]} />
+                <ListItems array={[{ 'name': 'a' }, { 'name': 'b' }, { 'name': 'c' }, { 'name': 'x' }, { 'name': 'k' }]} />
             </View >
         );
     }
