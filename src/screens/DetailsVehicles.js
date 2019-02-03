@@ -18,7 +18,7 @@ class DetailsVehicles extends Component {
 
         this.state = {
             vehicles: [],
-            loading: true
+            loading: false
         };
     }
 
@@ -26,7 +26,7 @@ class DetailsVehicles extends Component {
         const { params } = this.props.navigation.state;
         if (params.el.length > 0) {
             this.setState({
-                loading: false
+                loading: true
             });
         }
         params.el.forEach((el) => {
