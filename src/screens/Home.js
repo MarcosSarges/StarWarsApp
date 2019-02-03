@@ -7,6 +7,7 @@ import {
     Image,
     Text,
     Alert,
+    Button,
     ActivityIndicator
 } from 'react-native';
 //services
@@ -64,6 +65,7 @@ class Home extends Component {
                         }}
                     />
                 </View>
+
                 <View style={styles.boxImg}>
                     {
                         this.state.text === '' && !this.state.loading ?
@@ -75,7 +77,7 @@ class Home extends Component {
                                 </Text>
                             </View> : this.state.loading ?
                                 <ActivityIndicator size='large' color='#FFF' /> :
-                                <ListItems array={this.state.data.results} />
+                                <ListItems array={this.state.data.results} router={} />
                     }
 
                 </View>
@@ -102,17 +104,16 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         color: '#FFF',
         marginHorizontal: 16,
-        fontSize: 16
+        fontSize: 16,
+        height: 40
     },
     boxImg: {
-        alignItems: 'stretch',
-        padding: 16,
-        //marginTop: 110
+        padding: 8,
     },
     imgC3PO: {
         alignSelf: 'center',
-        height: 256,
-        width: 256
+        height: 200,
+        width: 200
     }
 });
 

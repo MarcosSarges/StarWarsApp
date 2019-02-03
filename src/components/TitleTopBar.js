@@ -16,9 +16,10 @@ const styles = StyleSheet.create({
     titleTopBar: {
         marginTop: 10,
         color: '#FFDE06',
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'Starjedi',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginHorizontal: 10
     }
 });
 

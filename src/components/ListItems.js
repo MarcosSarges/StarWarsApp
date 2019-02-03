@@ -10,7 +10,7 @@ class ListItems extends Component {
         return (
             <ScrollView contentContainerStyle={styles.list} >
                 {this.props.array.map((el) => (
-                    <Item key={el.name} name={el.name} styles={styles.item} />
+                    <Item key={el.name} name={el.name} url={el.url} />
                 ))}
             </ScrollView>
         );
@@ -21,11 +21,6 @@ const styles = StyleSheet.create({
     list: {
         paddingTop: 16,
         paddingHorizontal: 8,
-        marginBottom: 8,
-        borderColor: '#FFF',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderRadius: 5,
     },
 });
 

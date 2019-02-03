@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import Home from './screens/Home';
-import Details from './screens/Details';
+import AppContainer from './router/router';
 
 export default class App extends Component {
   render() {
     return (
-      <Home />
+      <AppContainer />
     );
   }
 }
