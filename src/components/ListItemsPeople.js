@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 
 //componente
 import ItemPeople from './ItemPeople';
 
 class ListItemsPeople extends Component {
 
+    keyExtractor = (item) => (item.name);
+    renderItemPeople = ({ item }) => (<ItemPeople name={item.name} el={item} />);
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.list} >
-                {this.props.array.map((el) => (
-                    <ItemPeople key={el.name} name={el.name} el={el} />
-                ))}
-            </ScrollView>
+            <FlatList
+                data={this.props.array}
+                keyExtractor={this.keyExtractor}
+                renderItem={this.renderItemPeople}
+            />
         );
     }
 }
 
-const styles = StyleSheet.create({
-    list: {
-        paddingTop: 16,
-        paddingHorizontal: 8,
-    },
-});
 
 export default ListItemsPeople;

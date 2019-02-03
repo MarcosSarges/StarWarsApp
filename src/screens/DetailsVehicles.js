@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
     Text, View, FlatList,
-    Image, StyleSheet,
+    Image, StyleSheet, StatusBar,
+    ActivityIndicator
 } from 'react-native';
 
 //services
@@ -16,12 +17,19 @@ class DetailsVehicles extends Component {
         super(props);
 
         this.state = {
-            vehicles: []
+            vehicles: [],
+            loading: true
         };
     }
 
     componentDidMount() {
-        this.props.navigation.state.params.el.forEach((el) => {
+        const { params } = this.props.navigation.state;
+        if (params.el.length > 0) {
+            this.setState({
+                loading: true
+            });
+        }
+        params.el.forEach((el) => {
             //o split é necessario devido ao tipo de retorno
             //da url dos filmes e a biblioteca utilizada para realizar o get
             this.find(el.split('https://swapi.co/api/')[1]);
@@ -44,6 +52,21 @@ class DetailsVehicles extends Component {
         }
     }
     keyExtractor = (item) => (item.name);
+
+    testRenderList = () => {
+        if (this.state.vehicles.length > 0) {
+            return (
+                <FlatList
+                    data={this.state.vehicles}
+                    renderItem={this.renderItemList}
+                    keyExtractor={this.keyExtractor}
+                />
+            );
+        } else if (this.state.vehicles.length === 0 && !this.state.loading) {
+            return this.renderItemError();
+        }
+        return (<ActivityIndicator size='large' color='#FFF' />);
+    }
 
     renderItemError = () => (
         <View style={styles.cardVehicles}>
@@ -72,21 +95,11 @@ class DetailsVehicles extends Component {
         </View >
     );
 
-
     render() {
         return (
             <View style={{ backgroundColor: '#000', flex: 1 }} >
-                {
-                    //testar se exite algum elemento na lista
-                    this.state.vehicles.length > 0 ?
-                        <FlatList
-                            data={this.state.vehicles}
-                            renderItem={this.renderItemList}
-                            keyExtractor={this.keyExtractor}
-                        /> :
-                        this.renderItemError()
-                }
-
+                <StatusBar hidden />
+                {this.testRenderList()}
             </ View>
         );
     }

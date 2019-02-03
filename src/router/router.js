@@ -25,7 +25,6 @@ const Rotas = createStackNavigator(
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff',
-                    textAlign: 'center', 
                 },
             },
         },
@@ -39,7 +38,6 @@ const Rotas = createStackNavigator(
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff',
-                    textAlign: 'center'
                 },
             },
         },
@@ -53,7 +51,6 @@ const Rotas = createStackNavigator(
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff',
-                    textAlign: 'center'
                 },
             }
         },
@@ -67,7 +64,6 @@ const Rotas = createStackNavigator(
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff',
-                    textAlign: 'center'
                 },
             }
         }

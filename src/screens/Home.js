@@ -87,7 +87,7 @@ class Home extends Component {
 
                 <View style={styles.boxImg}>
                     {this.renderList()}
-                </View>
+                </View> 
             </View >
         );
     }
@@ -116,7 +116,9 @@ const styles = StyleSheet.create({
         height: 40
     },
     boxImg: {
-        padding: 8,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        flex: 1
     },
     imgC3PO: {
         alignSelf: 'center',
