@@ -80,6 +80,7 @@ class DetailsStarships extends Component {
         return (
             <View style={{ backgroundColor: '#000', flex: 1 }} >
                 {
+                    //testar se exite algum elemento na lista
                     this.state.starships.length > 0 ?
                         <FlatList
                             data={this.state.starships}

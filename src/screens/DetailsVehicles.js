@@ -44,7 +44,7 @@ class DetailsVehicles extends Component {
         }
     }
     keyExtractor = (item) => (item.name);
-    
+
     renderItemError = () => (
         <View style={styles.cardVehicles}>
             <Image source={Vehicles} style={{ height: 60, width: 60, alignSelf: 'center' }} />
@@ -77,6 +77,7 @@ class DetailsVehicles extends Component {
         return (
             <View style={{ backgroundColor: '#000', flex: 1 }} >
                 {
+                    //testar se exite algum elemento na lista
                     this.state.vehicles.length > 0 ?
                         <FlatList
                             data={this.state.vehicles}

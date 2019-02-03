@@ -34,6 +34,7 @@ class DetailsFilms extends Component {
                 console.log('erro');
             } else {
                 this.setState({
+                    //ele cria um novo array utilizando o existente e concatenando com o novo
                     films: this.state.films.concat(res.data)
                 });
             }
@@ -71,6 +72,7 @@ class DetailsFilms extends Component {
         return (
             <View style={{ backgroundColor: '#000', flex: 1 }} >
                 {
+                    //testar se exite algum elemento na lista
                     this.state.films.length > 0 ?
                         <FlatList
                             data={this.state.films}
