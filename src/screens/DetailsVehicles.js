@@ -26,7 +26,7 @@ class DetailsVehicles extends Component {
         const { params } = this.props.navigation.state;
         if (params.el.length > 0) {
             this.setState({
-                loading: true
+                loading: false
             });
         }
         params.el.forEach((el) => {
