@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, StatusBar, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
+import {
+    Text, View, StatusBar,
+    TouchableOpacity, Image, StyleSheet,
+    ScrollView, ActivityIndicator
+} from 'react-native';
+
+//services
+import swapi from '../services/swapi';
 
 //imagens
 import Films from './../imgs/video-camera.png';
 import Spaceships from './../imgs/millennium-falcon.png';
 import Vehicles from './../imgs/XWing.png';
 //componente
-import TitleTopBar from './../components/TitleTopBar';
+import TitleTopBar from '../components/TitleTopBar';
 
-class Details extends Component {
+class DetailsPerson extends Component {
 
     constructor(props) {
         super(props);
@@ -27,10 +34,11 @@ class Details extends Component {
             films: [],
             species: [],
             vehicles: [],
-            starships: []
+            starships: [],
+            loading: true
         };
     }
-    async componentDidMount() {
+    componentDidMount() {
         const { el } = this.props.navigation.state.params;
         this.setState({
             url: el.url,
@@ -46,8 +54,24 @@ class Details extends Component {
             films: el.films,
             species: el.species,
             vehicles: el.vehicles,
-            starships: el.starships
-        });
+            starships: el.starships,
+        }, () => { this.find(this.state.homeworld.split('https://swapi.co/api/')[1]); });
+    }
+
+    find = async (url) => {
+        const res = await swapi.get(url);
+        if (res.detail === 'Not found') {
+            console.log('erro');
+        } else {
+            this.setState({
+                homeworld: res.data.name,
+                loading: false
+            });
+        }
+    }
+
+    goDetails = (el, routerName) => {
+        this.props.navigation.navigate(routerName, { el });
     }
 
     render() {
@@ -64,8 +88,9 @@ class Details extends Component {
                     <Text style={styles.feature}>Cor de pele: {this.state.skin_color}</Text>
                     <Text style={styles.feature}>Cor dos olhos: {this.state.eye_color}</Text>
                     <Text style={styles.feature}>Aniversário: {this.state.birth_year}</Text>
-                    <Text style={styles.feature}>Genero:{this.state.gender}</Text>
-                    <Text style={styles.feature}>Terra natal: {this.state.homeworld}</Text>
+                    <Text style={styles.feature}>Genero: {this.state.gender}</Text>
+                    {this.state.loading ? <ActivityIndicator size='small' color='#FFF' /> :
+                        <Text style={styles.feature}>Terra natal: {this.state.homeworld}</Text>}
                 </View>
                 <Text style={styles.titleSection}>Mais Detalhes</Text>
                 <View style={styles.viewButtons}>
@@ -136,4 +161,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Details;
+export default DetailsPerson;

@@ -2,7 +2,10 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 //Screens
 import HomeScreen from '../screens/Home';
-import DetailsScreen from '../screens/Details';
+import DetailsPersonScreen from '../screens/DetailsPerson';
+import DetailsFilmsScreen from '../screens/DetailsFilms';
+import DetailsStarshipsScreen from '../screens/DetailsStarships';
+import DetailsVehiclesScreen from '../screens/DetailsVehicles';
 
 const Rotas = createStackNavigator(
     {
@@ -12,11 +15,50 @@ const Rotas = createStackNavigator(
                 header: null
             },
         },
-        Details: {
-            screen: DetailsScreen,
+        DetailsPerson: {
+            screen: DetailsPersonScreen,
             navigationOptions: {
                 header: null
             },
+        },
+        DetailsFilms: {
+            screen: DetailsFilmsScreen,
+            navigationOptions: {
+                title: 'Filmes',
+                headerStyle: {
+                    backgroundColor: '#000',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff',
+                }
+            },
+        },
+        DetailsStarships: {
+            screen: DetailsStarshipsScreen,
+            navigationOptions: {
+                title: 'Naves',
+            },
+            headerStyle: {
+                backgroundColor: '#000',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff',
+            }
+        },
+        DetailsVehicles: {
+            screen: DetailsVehiclesScreen,
+            navigationOptions: {
+                title: 'Veículos',
+            },
+            headerStyle: {
+                backgroundColor: '#000',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff',
+            }
         }
     },
     {

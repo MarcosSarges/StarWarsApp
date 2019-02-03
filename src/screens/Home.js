@@ -7,7 +7,6 @@ import {
     Image,
     Text,
     Alert,
-    Button,
     ActivityIndicator
 } from 'react-native';
 //services
@@ -30,7 +29,7 @@ class Home extends Component {
         };
     }
 
-    fild = async (name) => {
+    find = async (name) => {
         const res = await swapi.get('/people/', { search: `${name}` });
         if (res.data.count > 0) {
             this.setState({ data: res.data, loading: false });
@@ -40,7 +39,27 @@ class Home extends Component {
             this.setState({ text: '', data: [], loading: false });
         }
     }
-
+    //logica para lista o personagens na principal
+    renderList = () => {
+        if (this.state.text === '' && !this.state.loading) {
+            return (
+                <View style={{ alignItems: 'center' }}>
+                    <Image source={C3PO} style={styles.imgC3PO} />
+                    <Text style={{ color: '#FFF', fontSize: 16, textAlign: 'center' }}>
+                        Procure por um personagem do StarWars e descubra
+                        mais sobre nosso universo.
+                    </Text>
+                </View>
+            );
+        } else if (this.state.loading) {
+            return (
+                <ActivityIndicator size='large' color='#FFF' />
+            );
+        }
+        return (
+            <ListItems array={this.state.data.results} />
+        );
+    }
     render() {
         return (
             <View style={styles.view}>
@@ -53,7 +72,7 @@ class Home extends Component {
                                 text: event.nativeEvent.text,
                                 loading: true
                             });
-                            this.fild(event.nativeEvent.text);
+                            this.find(event.nativeEvent.text);
                         }}
                         style={styles.textInput}
                         placeholderTextColor='#CCC'
@@ -67,23 +86,12 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.boxImg}>
-                    {
-                        this.state.text === '' && !this.state.loading ?
-                            <View style={{ alignItems: 'center' }}>
-                                <Image source={C3PO} style={styles.imgC3PO} />
-                                <Text style={{ color: '#FFF', fontSize: 16, textAlign: 'center' }}>
-                                    Procure por um personagem do StarWars e descubra
-                                    mais sobre nosso universo.
-                                </Text>
-                            </View> : this.state.loading ?
-                                <ActivityIndicator size='large' color='#FFF' /> :
-                                <ListItems array={this.state.data.results} />
-                    }
-
+                    {this.renderList()}
                 </View>
             </View >
         );
     }
+
 
 }
 

@@ -6,7 +6,7 @@ import C3PO from './../imgs/c3-po.png';
 
 class Item extends Component {
     goDetails = (el) => {
-        this.props.navigation.navigate('Details', { el });
+        this.props.navigation.navigate('DetailsPerson', { el });
     }
     render() {
         return (
