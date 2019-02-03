@@ -4,11 +4,14 @@ import {
     StyleSheet,
     StatusBar,
     View,
+    NetInfo,
     Image,
     Text,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    AsyncStorage
 } from 'react-native';
+
 //services
 import swapi from './../services/swapi';
 //imagem
@@ -25,20 +28,52 @@ class Home extends Component {
         this.state = {
             text: '',
             loading: false,
-            data: {}
+            data: {},
+            isConnected: false
         };
     }
 
-    find = async (name) => {
-        const res = await swapi.get('/people/', { search: `${name}` });
-        if (res.data.count > 0) {
-            this.setState({ data: res.data, loading: false });
-        } else {
-            Alert.alert('Error',
-                'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
-            this.setState({ text: '', data: [], loading: false });
+    async componentDidMount() {
+        try {
+            await AsyncStorage.setItem('@StarWarsApp:key', ' ');
+        } catch (error) {
+            console.log(error);
         }
     }
+
+    isConn = () => {
+        NetInfo.isConnected.fetch().then(isConnected => {
+            this.setState({
+                isConnected,
+            });
+        });
+    }
+
+    find = async (name) => {
+        // this.isConn();
+        // if (this.state.isConnected) {
+            try {
+                const res = await swapi.get('/people/', { search: `${name}` });
+                if (res.data.count > 0) {
+                    this.setState({ data: res.data, loading: false });
+                } else {
+                    Alert.alert('Error',
+                        'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
+                    this.setState({ text: '', data: [], loading: false });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        // } else {
+        //     Alert.alert('Erro de conexão', 'Infelizmente você não possui internet');
+        //     this.setState({
+        //         text: '',
+        //         loading: false,
+        //         data: {},
+        //     });
+        // }
+    }
+
     //logica para lista o personagens na principal
     renderList = () => {
         if (this.state.text === '' && !this.state.loading) {
@@ -65,7 +100,7 @@ class Home extends Component {
             <View style={styles.view}>
                 <StatusBar hidden />
                 <View style={styles.topBar}>
-                    <TitleTopBar title="Star Wars APP" />
+                    <TitleTopBar title="Star Wars APP" marginTop={25} />
                     <TextInput
                         onSubmitEditing={(event) => {
                             this.setState({
@@ -87,7 +122,7 @@ class Home extends Component {
 
                 <View style={styles.boxImg}>
                     {this.renderList()}
-                </View> 
+                </View>
             </View >
         );
     }

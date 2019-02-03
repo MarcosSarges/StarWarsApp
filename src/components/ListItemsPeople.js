@@ -5,9 +5,9 @@ import { FlatList } from 'react-native';
 import ItemPeople from './ItemPeople';
 
 class ListItemsPeople extends Component {
-
     keyExtractor = (item) => (item.name);
-    renderItemPeople = ({ item }) => (<ItemPeople name={item.name} el={item} />);
+
+    renderItemPeople = ({ item }) => (<ItemPeople name={item.name} el={item} url={item.url} />);
     render() {
         return (
             <FlatList

@@ -39,26 +39,35 @@ class DetailsPerson extends Component {
         };
     }
     componentDidMount() {
-        const { el } = this.props.navigation.state.params;
-        this.setState({
-            url: el.url,
-            name: el.name.toLowerCase(),
-            height: el.height,
-            mass: el.mass,
-            hair_color: el.hair_color,
-            skin_color: el.skin_color,
-            eye_color: el.eye_color,
-            birth_year: el.birth_year,
-            gender: el.gender,
-            homeworld: el.homeworld,
-            films: el.films,
-            species: el.species,
-            vehicles: el.vehicles,
-            starships: el.starships,
-        }, () => { this.find(this.state.homeworld.split('https://swapi.co/api/')[1]); });
+        this.findPeople(this.props.navigation.state.params.url);
     }
 
-    find = async (url) => {
+    findPeople = async (url) => {
+        const res = await swapi.get(url);
+        if (res.detail === 'Not found') {
+            console.log('erro');
+        } else {
+            this.setState({
+                url: res.data.url,
+                name: res.data.name.toLowerCase(),
+                height: res.data.height,
+                mass: res.data.mass,
+                hair_color: res.data.hair_color,
+                skin_color: res.data.skin_color,
+                eye_color: res.data.eye_color,
+                birth_year: res.data.birth_year,
+                gender: res.data.gender,
+                homeworld: res.data.homeworld,
+                films: res.data.films,
+                species: res.data.species,
+                vehicles: res.data.vehicles,
+                starships: res.data.starships,
+                loading: false
+            }, () => { this.findHome(this.state.homeworld.split('https://swapi.co/api/')[1]); });
+        }
+    }
+
+    findHome = async (url) => {
         const res = await swapi.get(url);
         if (res.detail === 'Not found') {
             console.log('erro');
