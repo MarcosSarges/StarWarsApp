@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation';
 //imagem
 import C3PO from './../imgs/c3-po.png';
 
-class Item extends Component {
+class ItemPeople extends Component {
     goDetails = (el) => {
         this.props.navigation.navigate('DetailsPerson', { el });
     }
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default withNavigation(Item);
+export default withNavigation(ItemPeople);

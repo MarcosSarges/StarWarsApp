@@ -42,7 +42,7 @@ class DetailsPerson extends Component {
         const { el } = this.props.navigation.state.params;
         this.setState({
             url: el.url,
-            name: el.name,
+            name: el.name.toLowerCase(),
             height: el.height,
             mass: el.mass,
             hair_color: el.hair_color,
@@ -70,12 +70,7 @@ class DetailsPerson extends Component {
         }
     }
 
-    goDetails = (el, routerName) => {
-        this.props.navigation.navigate(routerName, { el });
-    }
-
     render() {
-        console.log(this.state.url);
         return (
             <ScrollView style={styles.view}>
                 <StatusBar hidden />
@@ -94,15 +89,24 @@ class DetailsPerson extends Component {
                 </View>
                 <Text style={styles.titleSection}>Mais Detalhes</Text>
                 <View style={styles.viewButtons}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => (this.props.navigation.navigate('DetailsFilms', { el: this.state.films }))}
+                    >
                         <Text style={styles.titleSection}>Filmes</Text>
                         <Image style={styles.imgButtons} source={Films} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => (this.props.navigation.navigate('DetailsStarships', { el: this.state.starships }))}
+                    >
                         <Text style={styles.titleSection}>Naves</Text>
                         <Image style={styles.imgButtons} source={Spaceships} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => (this.props.navigation.navigate('DetailsVehicles', { el: this.state.vehicles }))}
+                    >
                         <Text style={styles.titleSection}>veiculos</Text>
                         <Image style={styles.imgButtons} source={Vehicles} />
                     </TouchableOpacity>
@@ -123,7 +127,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 16,
         paddingBottom: 16,
-        margin: 16
+        marginTop: 16,
+        marginHorizontal: 16
     },
     feature: {
         color: '#FFF',

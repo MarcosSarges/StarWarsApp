@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 //componente
-import Item from './Item';
+import ItemPeople from './ItemPeople';
 
-class ListItems extends Component {
+class ListItemsPeople extends Component {
 
     render() {
         return (
             <ScrollView contentContainerStyle={styles.list} >
                 {this.props.array.map((el) => (
-                    <Item key={el.name} name={el.name} el={el} />
+                    <ItemPeople key={el.name} name={el.name} el={el} />
                 ))}
             </ScrollView>
         );
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListItems;
+export default ListItemsPeople;

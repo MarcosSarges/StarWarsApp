@@ -15,7 +15,7 @@ import swapi from './../services/swapi';
 import C3PO from './../imgs/c3-po.png';
 
 //componentes
-import ListItems from '../components/ListItems';
+import ListItemsPeople from '../components/ListItemsPeople';
 import TitleTopBar from '../components/TitleTopBar';
 
 class Home extends Component {
@@ -57,7 +57,7 @@ class Home extends Component {
             );
         }
         return (
-            <ListItems array={this.state.data.results} />
+            <ListItemsPeople array={this.state.data.results} />
         );
     }
     render() {

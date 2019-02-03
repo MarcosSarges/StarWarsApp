@@ -13,7 +13,7 @@ class TitleTopBar extends Component {
 
 const styles = StyleSheet.create({
     titleTopBar: {
-        marginTop: 10,
+        //marginTop: 10,
         color: '#FFDE06',
         fontSize: 35,
         fontFamily: 'Starjedi',

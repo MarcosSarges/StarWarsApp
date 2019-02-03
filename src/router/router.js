@@ -18,7 +18,15 @@ const Rotas = createStackNavigator(
         DetailsPerson: {
             screen: DetailsPersonScreen,
             navigationOptions: {
-                header: null
+                title: 'Características',
+                headerStyle: {
+                    backgroundColor: '#000',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff',
+                    textAlign: 'center', 
+                },
             },
         },
         DetailsFilms: {
@@ -31,33 +39,36 @@ const Rotas = createStackNavigator(
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff',
-                }
+                    textAlign: 'center'
+                },
             },
         },
         DetailsStarships: {
             screen: DetailsStarshipsScreen,
             navigationOptions: {
                 title: 'Naves',
-            },
-            headerStyle: {
-                backgroundColor: '#000',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff',
+                headerStyle: {
+                    backgroundColor: '#000',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff',
+                    textAlign: 'center'
+                },
             }
         },
         DetailsVehicles: {
             screen: DetailsVehiclesScreen,
             navigationOptions: {
                 title: 'Veículos',
-            },
-            headerStyle: {
-                backgroundColor: '#000',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff',
+                headerStyle: {
+                    backgroundColor: '#000',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff',
+                    textAlign: 'center'
+                },
             }
         }
     },

@@ -29,7 +29,6 @@ class DetailsVehicles extends Component {
     }
 
     render() {
-        console.log(this.state.url);
         return (
             <ScrollView>
                 <TitleTopBar title="ola" />

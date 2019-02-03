@@ -28,7 +28,6 @@ class DetailsStarships extends Component {
     }
 
     render() {
-        console.log(this.state.url);
         return (
             <ScrollView>
                 <TitleTopBar title="ola" />
