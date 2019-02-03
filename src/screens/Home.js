@@ -77,7 +77,7 @@ class Home extends Component {
                                 </Text>
                             </View> : this.state.loading ?
                                 <ActivityIndicator size='large' color='#FFF' /> :
-                                <ListItems array={this.state.data.results} router={} />
+                                <ListItems array={this.state.data.results} />
                     }
 
                 </View>

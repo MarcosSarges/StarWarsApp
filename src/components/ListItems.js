@@ -10,7 +10,7 @@ class ListItems extends Component {
         return (
             <ScrollView contentContainerStyle={styles.list} >
                 {this.props.array.map((el) => (
-                    <Item key={el.name} name={el.name} url={el.url} />
+                    <Item key={el.name} name={el.name} el={el} />
                 ))}
             </ScrollView>
         );

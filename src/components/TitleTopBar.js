@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, StyleSheet } from 'react-native';
 
 class TitleTopBar extends Component {
-
     render() {
         return (
             <Text style={styles.titleTopBar}>

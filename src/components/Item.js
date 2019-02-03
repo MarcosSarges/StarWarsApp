@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-
+import { withNavigation } from 'react-navigation';
 //imagem
 import C3PO from './../imgs/c3-po.png';
 
 class Item extends Component {
-    goDetails = (url) => {
-        this.props.navigation.navigate('Details', { url });
+    goDetails = (el) => {
+        this.props.navigation.navigate('Details', { el });
     }
     render() {
         return (
             <TouchableOpacity
                 style={styles.cardTouchableOpacity}
-                onPress={this.goDetails(this.props.url)}
+                onPress={() => (this.goDetails(this.props.el))}
             >
                 <Image source={C3PO} style={{ width: 80, height: 80, margin: 8 }} />
                 <Text style={{ color: '#fff', fontSize: 16, margin: 8 }} >
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Item;
+export default withNavigation(Item);

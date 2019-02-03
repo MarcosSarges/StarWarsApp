@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StatusBar, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, StatusBar, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
 
 //imagens
 import Films from './../imgs/video-camera.png';
@@ -7,7 +7,6 @@ import Spaceships from './../imgs/millennium-falcon.png';
 import Vehicles from './../imgs/XWing.png';
 //componente
 import TitleTopBar from './../components/TitleTopBar';
-import BackgraundStars from './../components/BackgroundStars';
 
 class Details extends Component {
 
@@ -15,8 +14,8 @@ class Details extends Component {
         super(props);
 
         this.state = {
-            url: this.props.url,
-            name: 'Marcos',
+            url: '',
+            name: '',
             height: '',
             mass: '',
             hair_color: '',
@@ -31,13 +30,32 @@ class Details extends Component {
             starships: []
         };
     }
+    async componentDidMount() {
+        const { el } = this.props.navigation.state.params;
+        this.setState({
+            url: el.url,
+            name: el.name,
+            height: el.height,
+            mass: el.mass,
+            hair_color: el.hair_color,
+            skin_color: el.skin_color,
+            eye_color: el.eye_color,
+            birth_year: el.birth_year,
+            gender: el.gender,
+            homeworld: el.homeworld,
+            films: el.films,
+            species: el.species,
+            vehicles: el.vehicles,
+            starships: el.starships
+        });
+    }
 
     render() {
+        console.log(this.state.url);
         return (
-            <View style={styles.view}>
+            <ScrollView style={styles.view}>
                 <StatusBar hidden />
                 <TitleTopBar title={this.state.name} />
-                <BackgraundStars />
                 <View style={styles.table}>
                     <Text style={styles.titleSection}>Características Físicas</Text>
                     <Text style={styles.feature}>Altura: {this.state.height}</Text>
@@ -64,7 +82,7 @@ class Details extends Component {
                         <Image style={styles.imgButtons} source={Vehicles} />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 8,
-        height: 150,
+        height: 120,
         width: 150
     },
     imgButtons: {
