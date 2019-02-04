@@ -8,8 +8,7 @@ import {
     Image,
     Text,
     Alert,
-    ActivityIndicator,
-    AsyncStorage
+    ActivityIndicator
 } from 'react-native';
 
 //services
@@ -21,21 +20,32 @@ import C3PO from './../imgs/c3-po.png';
 import ListItemsPeople from '../components/ListItemsPeople';
 import TitleTopBar from '../components/TitleTopBar';
 
+import sql from './../services/sqlitehelper';
+
 class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             text: '',
-            loading: false,
+            loading: true,
             data: {},
-            isConnected: false
+            isConnected: false,
+            retorno: []
         };
     }
 
     async componentDidMount() {
         try {
-            await AsyncStorage.setItem('@StarWarsApp:key', ' ');
+            sql.getAllFavorites().then((res) => {
+                this.setState({
+                    retorno: res
+                }, () => {
+                    if (this.state.retorno.length === 0) {
+                        this.setState({ length: false });
+                    }
+                });
+            });
         } catch (error) {
             console.log(error);
         }
@@ -52,18 +62,18 @@ class Home extends Component {
     find = async (name) => {
         // this.isConn();
         // if (this.state.isConnected) {
-            try {
-                const res = await swapi.get('/people/', { search: `${name}` });
-                if (res.data.count > 0) {
-                    this.setState({ data: res.data, loading: false });
-                } else {
-                    Alert.alert('Error',
-                        'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
-                    this.setState({ text: '', data: [], loading: false });
-                }
-            } catch (error) {
-                console.log(error);
+        try {
+            const res = await swapi.get('/people/', { search: `${name}` });
+            if (res.data.count > 0) {
+                this.setState({ data: res.data, loading: false });
+            } else {
+                Alert.alert('Error',
+                    'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
+                this.setState({ text: '', data: [], loading: false });
             }
+        } catch (error) {
+            console.log(error);
+        }
         // } else {
         //     Alert.alert('Erro de conexão', 'Infelizmente você não possui internet');
         //     this.setState({
@@ -75,6 +85,12 @@ class Home extends Component {
     }
 
     //logica para lista o personagens na principal
+
+    renderFavoriteList = () => (
+        <ListItemsPeople array={this.state.retorno} />
+    )
+
+
     renderList = () => {
         if (this.state.text === '' && !this.state.loading) {
             return (
@@ -121,7 +137,7 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.boxImg}>
-                    {this.renderList()}
+                    {this.state.retorno.length > 0 ? this.renderFavoriteList() : this.renderList()}
                 </View>
             </View >
         );
