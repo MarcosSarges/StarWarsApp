@@ -1,7 +1,7 @@
 import SQLite from 'react-native-sqlite-2';
 
 const dbName = 'starwars.db';
-const dbVersion = '1.0';
+const dbVersion = '2.0';
 const dbDisplayname = 'SQLite Favorites Database';
 const dbSize = 200000;
 
@@ -13,7 +13,7 @@ const getAllFavorites = () => {
         const array = [];
         db.transaction((txn) => {
             txn.executeSql('CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30), url VARCHAR(30))', []);
-            txn.executeSql('SELECT * FROM `favorites`', [], function (tx, res) {
+            txn.executeSql('SELECT * FROM `favorites`', [], (tx, res) => {
                 for (let i = 0; i < res.rows.length; ++i) {
                     array.push(res.rows.item(i));
                 }
@@ -24,12 +24,12 @@ const getAllFavorites = () => {
 }
 
 
-const deleteFavorites = (id) => {
+const deleteFavorites = (url) => {
     const db = SQLite.openDatabase(dbName, dbVersion,
         dbDisplayname, dbSize);
 
     db.transaction((txn) => {
-        txn.executeSql('DELETE FROM `favorites` WHERE id = :id', [id],
+        txn.executeSql('DELETE FROM `favorites` WHERE url = :url', [url],
             (tx, res) => {
                 console.log(res);
             }, (err) => {
@@ -41,7 +41,6 @@ const deleteFavorites = (id) => {
 const insertFavorites = (name, url) => {
     const db = SQLite.openDatabase(dbName, dbVersion,
         dbDisplayname, dbSize);
-
     db.transaction((txn) => {
         txn.executeSql('INSERT INTO `favorites` (name,url) VALUES (:name,:url)', [name, url],
             (tx, res) => {

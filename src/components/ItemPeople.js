@@ -27,14 +27,7 @@ class ItemPeople extends Component {
                 </Text>
                 {
                     this.props.favorite
-                        ? <TouchableOpacity
-                            style={styles.touchableOpacityFavorites}
-                        >
-                            <Image
-                                source={HeartRed}
-                                style={{ height: 30, width: 30 }}
-                            />
-                        </TouchableOpacity>
+                        ? <Image source={HeartRed} style={styles.heart} />
                         : null
                 }
             </TouchableOpacity>
@@ -53,10 +46,12 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderRadius: 5,
     },
-    touchableOpacityFavorites: {
+    heart: {
         position: 'absolute',
         top: 10,
-        right: 10
+        right: 10,
+        height: 30,
+        width: 30
     }
 });
 

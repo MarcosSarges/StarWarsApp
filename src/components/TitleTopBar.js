@@ -7,7 +7,7 @@ class TitleTopBar extends Component {
         titleTopBar: {
             //marginTop: 10,
             color: '#FFDE06',
-            fontSize: 35,
+            fontSize: this.props.fontSize,
             fontFamily: 'Starjedi',
             textAlign: 'center',
             marginHorizontal: 10,

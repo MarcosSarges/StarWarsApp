@@ -31,20 +31,32 @@ class Home extends Component {
             loading: true,
             data: [],
             isConnected: false,
-            retorno: [],
-            results: 0
+            favorites: [],
+            resultsApi: 0,
+            resultsSql: 0
         };
     }
 
     async componentDidMount() {
+        this.getListFavorites();
+    }
+
+    // async shouldComponentUpdate() {
+    //     //     this.getListFavorites();
+    //     console.log('aqui');
+    // }
+
+    getListFavorites = () => {
         try {
             // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
             sql.getAllFavorites().then((res) => {
                 this.setState({
-                    retorno: res
+                    favorites: res,
                 }, () => {
-                    if (this.state.retorno.length === 0) {
-                        this.setState({ length: false });
+                    if (this.state.favorites.length > 0) {
+                        this.setState({ loading: false, resultsSql: 1 });
+                    } else {
+                        this.setState({ loading: false });
                     }
                 });
             });
@@ -64,11 +76,10 @@ class Home extends Component {
     find = async (name) => {
         // this.isConn();
         // if (this.state.isConnected) {
-        this.setState({ loading: true });
         try {
             const res = await swapi.get('/people/', { search: `${name}` });
             if (res.data.count > 0) {
-                this.setState({ data: res.data, loading: false, results: 1 });
+                this.setState({ data: res.data, loading: false, resultsApi: 1 });
             } else {
                 Alert.alert('Error',
                     'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
@@ -89,7 +100,12 @@ class Home extends Component {
 
     //logica para lista o personagens na principal
 
-    renderFavoriteList = () => (<ListItemsPeople array={this.state.retorno} favorite />);
+    renderFavoriteList = () => (
+        <View style={{ flex: 1 }}>
+            <TitleTopBar title="Lista de favoritos" fontSize={16} marginTop={0} />
+            <ListItemsPeople array={this.state.favorites} favorite />
+        </View>
+    );
     renderList = () => (<ListItemsPeople array={this.state.data.results} favorite={false} />);
 
     renderC3PO = () => (
@@ -103,19 +119,23 @@ class Home extends Component {
     );
 
     renderListDecision = () => {
-        const { data, text, retorno, results, loading } = this.state;
-        if (!loading) {
-            if (retorno.length > 0 && results === 0 && text === '') {
-                return this.renderFavoriteList();
-            } else if (text === '' && retorno.length === 0) {
-                return this.renderC3PO();
-            } else if (results === 1) {
-                return (
-                    <ListItemsPeople array={data.results} />
-                );
-            }
+        const { text, favorites, resultsApi, loading } = this.state;
+        //if (loading === false) {
+        if (loading) {
+            return (<ActivityIndicator size='large' color='#FFF' />);
         }
-        return (<ActivityIndicator size='large' color='#FFF' />);
+        if (favorites.length > 0 && resultsApi === 0) {
+            return this.renderFavoriteList();
+        }
+        if (text === '' && favorites.length === 0) {
+            return this.renderC3PO();
+        }
+        if (resultsApi === 1) {
+            console.log('aqui');
+            return this.renderList();
+        }
+        //  }
+        //  
         // console.log(text);
     }
 
@@ -124,7 +144,7 @@ class Home extends Component {
             <View style={styles.view}>
                 <StatusBar hidden />
                 <View style={styles.topBar}>
-                    <TitleTopBar title="Star Wars APP" marginTop={25} />
+                    <TitleTopBar title="Star Wars APP" fontSize={35} marginTop={25} />
                     <TextInput
                         onSubmitEditing={(event) => {
                             this.setState({
@@ -138,12 +158,12 @@ class Home extends Component {
                         placeholder='Digite o nome do personagem'
                         onChange={(event) => {
                             if (event.nativeEvent.text === '') {
-                                this.setState({ text: event.nativeEvent.text, loading: false });
+                                this.getListFavorites();
+                                this.setState({ text: event.nativeEvent.text, resultsApi: 0 });
                             }
                         }}
                     />
                 </View>
-
                 <View style={styles.boxImg}>
                     {this.renderListDecision()}
                 </View>

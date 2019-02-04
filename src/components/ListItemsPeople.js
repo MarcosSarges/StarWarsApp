@@ -6,8 +6,8 @@ import ItemPeople from './ItemPeople';
 
 class ListItemsPeople extends Component {
     keyExtractor = (item) => (item.name);
-
-    renderItemPeople = ({ item }) => (<ItemPeople name={item.name} el={item} url={item.url} favorite={this.props.favorite} />);
+    renderItemPeople = ({ item }) => 
+        (<ItemPeople name={item.name} el={item} url={item.url} favorite={this.props.favorite} />);
     render() {
         return (
             <FlatList

@@ -7,11 +7,14 @@ import {
 
 //services
 import swapi from '../services/swapi';
+import sql from './../services/sqlitehelper';
 
 //imagens
 import Films from './../imgs/video-camera.png';
 import Spaceships from './../imgs/millennium-falcon.png';
 import Vehicles from './../imgs/XWing.png';
+import HeartRed from './../imgs/heart_red.png';
+import HeartWhite from './../imgs/heart_white.png';
 //componente
 import TitleTopBar from '../components/TitleTopBar';
 
@@ -19,7 +22,6 @@ class DetailsPerson extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             url: '',
             name: '',
@@ -35,11 +37,24 @@ class DetailsPerson extends Component {
             species: [],
             vehicles: [],
             starships: [],
-            loading: true
+            loading: true,
+            favorites: [],
+            isFavorites: true,
+            exist: true
         };
     }
     componentDidMount() {
         this.findPeople(this.props.navigation.state.params.url);
+        try {
+            // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
+            sql.getAllFavorites().then((res) => {
+                this.setState({
+                    favorites: res,
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     findPeople = async (url) => {
@@ -63,7 +78,12 @@ class DetailsPerson extends Component {
                 vehicles: res.data.vehicles,
                 starships: res.data.starships,
                 loading: false
-            }, () => { this.findHome(this.state.homeworld.split('https://swapi.co/api/')[1]); });
+            }, () => {
+                this.setState({
+                    exist: this.exitsFavorites(this.state.name)
+                });
+                this.findHome(this.state.homeworld.split('https://swapi.co/api/')[1]);
+            });
         }
     }
 
@@ -79,11 +99,60 @@ class DetailsPerson extends Component {
         }
     }
 
+    insertFavorites = (name, url) => {
+        sql.insertFavorites(name, url);
+        this.setState({ isFavorites: true, exist: true });
+    }
+
+    deleteFavorites = (url) => {
+        sql.deleteFavorites(url);
+        this.setState({ isFavorites: false });
+    }
+
+    exitsFavorites = (name) => {
+        let exist = false;
+        if (this.state.favorites.length > 0) {
+            this.state.favorites.forEach((el) => {
+                if (el.name.toLowerCase() === name.toLowerCase()) {
+                    exist = true;
+                }
+            });
+        }
+        return exist;
+    }
+
+    renderButtonFavorites = () => {
+        if (this.state.exist && this.state.isFavorites) {
+            return (
+                <TouchableOpacity
+                    style={styles.heartButton}
+                    onPress={() => (this.deleteFavorites(this.state.url))}
+                >
+                    <Image
+                        source={HeartRed}
+                        style={styles.heartImage}
+                    />
+                </TouchableOpacity>
+            );
+        }
+        return (
+            <TouchableOpacity
+                style={styles.heartButton}
+                onPress={() => (this.insertFavorites(this.state.name, this.state.url))}
+            >
+                <Image
+                    source={HeartWhite}
+                    style={styles.heartImage}
+                />
+            </TouchableOpacity>
+        );
+    }
+
     render() {
         return (
             <ScrollView style={styles.view}>
                 <StatusBar hidden />
-                <TitleTopBar title={this.state.name} />
+                <TitleTopBar title={this.state.name} fontSize={35} />
                 <View style={styles.table}>
                     <Text style={styles.titleSection}>Características Físicas</Text>
                     <Text style={styles.feature}>Altura: {this.state.height}</Text>
@@ -100,29 +169,30 @@ class DetailsPerson extends Component {
                 <View style={styles.viewButtons}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => (this.props.navigation.navigate('DetailsFilms', { el: this.state.films }))}
+                        onPress={() => (this.props.navigation.navigate('DetailsFilms',
+                            { el: this.state.films }))}
                     >
                         <Text style={styles.titleSection}>Filmes</Text>
                         <Image style={styles.imgButtons} source={Films} />
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => (this.props.navigation.navigate('DetailsStarships', { el: this.state.starships }))}
+                        onPress={() => (this.props.navigation.navigate('DetailsStarships',
+                            { el: this.state.starships }))}
                     >
                         <Text style={styles.titleSection}>Naves</Text>
                         <Image style={styles.imgButtons} source={Spaceships} />
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => (this.props.navigation.navigate('DetailsVehicles', { el: this.state.vehicles }))}
+                        onPress={() => (this.props.navigation.navigate('DetailsVehicles',
+                            { el: this.state.vehicles }))}
                     >
                         <Text style={styles.titleSection}>veiculos</Text>
                         <Image style={styles.imgButtons} source={Vehicles} />
                     </TouchableOpacity>
                 </View>
-                {/* <View style={{ backgroundColor: '#FFF', height: 50, width: 50, position: 'absolute', right: 30, bottom: 15}}>
-                    <Text>Olá</Text>
-                </View> */}
+                {this.renderButtonFavorites()}
             </ScrollView>
         );
     }
@@ -175,6 +245,15 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         flexDirection: 'row',
         flex: 1
+    },
+    heartButton: {
+        position: 'absolute',
+        bottom: 30,
+        right: 15
+    },
+    heartImage: {
+        height: 30,
+        width: 30,
     }
 });
 
