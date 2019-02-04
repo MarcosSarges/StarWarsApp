@@ -38,7 +38,7 @@ class Home extends Component {
 
     async componentDidMount() {
         try {
-           // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
+            // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
             sql.getAllFavorites().then((res) => {
                 this.setState({
                     retorno: res
@@ -64,6 +64,7 @@ class Home extends Component {
     find = async (name) => {
         // this.isConn();
         // if (this.state.isConnected) {
+        this.setState({ loading: true });
         try {
             const res = await swapi.get('/people/', { search: `${name}` });
             if (res.data.count > 0) {
@@ -102,15 +103,17 @@ class Home extends Component {
     );
 
     renderListDecision = () => {
-        const { data, text, retorno, results } = this.state;
-        if (retorno.length > 0) {
-            return this.renderFavoriteList();
-        } else if (text === '' && retorno.length === 0) {
-            return this.renderC3PO();
-        } else if (results > 0) {
-            return (
-                <ListItemsPeople array={data.results} />
-            );
+        const { data, text, retorno, results, loading } = this.state;
+        if (!loading) {
+            if (retorno.length > 0 && results === 0 && text === '') {
+                return this.renderFavoriteList();
+            } else if (text === '' && retorno.length === 0) {
+                return this.renderC3PO();
+            } else if (results === 1) {
+                return (
+                    <ListItemsPeople array={data.results} />
+                );
+            }
         }
         return (<ActivityIndicator size='large' color='#FFF' />);
         // console.log(text);
