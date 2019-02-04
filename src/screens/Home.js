@@ -29,14 +29,16 @@ class Home extends Component {
         this.state = {
             text: '',
             loading: true,
-            data: {},
+            data: [],
             isConnected: false,
-            retorno: []
+            retorno: [],
+            results: 0
         };
     }
 
     async componentDidMount() {
         try {
+           // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
             sql.getAllFavorites().then((res) => {
                 this.setState({
                     retorno: res
@@ -65,7 +67,7 @@ class Home extends Component {
         try {
             const res = await swapi.get('/people/', { search: `${name}` });
             if (res.data.count > 0) {
-                this.setState({ data: res.data, loading: false });
+                this.setState({ data: res.data, loading: false, results: 1 });
             } else {
                 Alert.alert('Error',
                     'Infelizmente não foi possivel encontrar nenhum personagem com esse nome');
@@ -86,31 +88,34 @@ class Home extends Component {
 
     //logica para lista o personagens na principal
 
-    renderFavoriteList = () => (
-        <ListItemsPeople array={this.state.retorno} />
-    )
+    renderFavoriteList = () => (<ListItemsPeople array={this.state.retorno} favorite />);
+    renderList = () => (<ListItemsPeople array={this.state.data.results} favorite={false} />);
 
+    renderC3PO = () => (
+        <View style={{ alignItems: 'center' }}>
+            <Image source={C3PO} style={styles.imgC3PO} />
+            <Text style={{ color: '#FFF', fontSize: 16, textAlign: 'center' }}>
+                Procure por um personagem do StarWars e descubra
+                mais sobre nosso universo.
+            </Text>
+        </View>
+    );
 
-    renderList = () => {
-        if (this.state.text === '' && !this.state.loading) {
+    renderListDecision = () => {
+        const { data, text, retorno, results } = this.state;
+        if (retorno.length > 0) {
+            return this.renderFavoriteList();
+        } else if (text === '' && retorno.length === 0) {
+            return this.renderC3PO();
+        } else if (results > 0) {
             return (
-                <View style={{ alignItems: 'center' }}>
-                    <Image source={C3PO} style={styles.imgC3PO} />
-                    <Text style={{ color: '#FFF', fontSize: 16, textAlign: 'center' }}>
-                        Procure por um personagem do StarWars e descubra
-                        mais sobre nosso universo.
-                    </Text>
-                </View>
-            );
-        } else if (this.state.loading) {
-            return (
-                <ActivityIndicator size='large' color='#FFF' />
+                <ListItemsPeople array={data.results} />
             );
         }
-        return (
-            <ListItemsPeople array={this.state.data.results} />
-        );
+        return (<ActivityIndicator size='large' color='#FFF' />);
+        // console.log(text);
     }
+
     render() {
         return (
             <View style={styles.view}>
@@ -137,12 +142,11 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.boxImg}>
-                    {this.state.retorno.length > 0 ? this.renderFavoriteList() : this.renderList()}
+                    {this.renderListDecision()}
                 </View>
             </View >
         );
     }
-
 
 }
 

@@ -7,7 +7,6 @@ import { withNavigation } from 'react-navigation';
 //imagem
 import C3PO from './../imgs/c3-po.png';
 import HeartRed from './../imgs/heart_red.png';
-import HeartWhite from './../imgs/heart_white.png';
 
 class ItemPeople extends Component {
 
@@ -26,16 +25,18 @@ class ItemPeople extends Component {
                 <Text style={{ color: '#fff', fontSize: 16, margin: 8 }} >
                     {this.props.name}
                 </Text>
-                {/*
-                <TouchableOpacity
-                    style={styles.touchableOpacityFavorites}
-                >
-                    <Image
-                        source={false ? HeartRed : HeartWhite}
-                        style={{ height: 30, width: 30 }}
-                    />
-                </TouchableOpacity>
-                */}
+                {
+                    this.props.favorite
+                        ? <TouchableOpacity
+                            style={styles.touchableOpacityFavorites}
+                        >
+                            <Image
+                                source={HeartRed}
+                                style={{ height: 30, width: 30 }}
+                            />
+                        </TouchableOpacity>
+                        : null
+                }
             </TouchableOpacity>
         );
     }

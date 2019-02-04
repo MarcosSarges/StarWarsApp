@@ -120,6 +120,9 @@ class DetailsPerson extends Component {
                         <Image style={styles.imgButtons} source={Vehicles} />
                     </TouchableOpacity>
                 </View>
+                {/* <View style={{ backgroundColor: '#FFF', height: 50, width: 50, position: 'absolute', right: 30, bottom: 15}}>
+                    <Text>Olá</Text>
+                </View> */}
             </ScrollView>
         );
     }
