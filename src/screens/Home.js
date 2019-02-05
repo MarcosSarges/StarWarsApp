@@ -10,7 +10,7 @@ import {
     Alert,
     ActivityIndicator
 } from 'react-native';
-
+import { connect } from 'react-redux';
 //services
 import swapi from './../services/swapi';
 //imagem
@@ -33,22 +33,19 @@ class Home extends Component {
             isConnected: false,
             favorites: [],
             resultsApi: 0,
-            resultsSql: 0
+            resultsSql: 0,
+            isFavorites: false
         };
+
+        console.log(props);
     }
 
     async componentDidMount() {
         this.getListFavorites();
     }
 
-    // async shouldComponentUpdate() {
-    //     //     this.getListFavorites();
-    //     console.log('aqui');
-    // }
-
     getListFavorites = () => {
         try {
-            // sql.insertFavorites('Luke Skywalker', 'https://swapi.co/api/people/1/');
             sql.getAllFavorites().then((res) => {
                 this.setState({
                     favorites: res,
@@ -74,8 +71,6 @@ class Home extends Component {
     }
 
     find = async (name) => {
-        // this.isConn();
-        // if (this.state.isConnected) {
         try {
             const res = await swapi.get('/people/', { search: `${name}` });
             if (res.data.count > 0) {
@@ -88,18 +83,9 @@ class Home extends Component {
         } catch (error) {
             console.log(error);
         }
-        // } else {
-        //     Alert.alert('Erro de conexão', 'Infelizmente você não possui internet');
-        //     this.setState({
-        //         text: '',
-        //         loading: false,
-        //         data: {},
-        //     });
-        // }
     }
 
     //logica para lista o personagens na principal
-
     renderFavoriteList = () => (
         <View style={{ flex: 1 }}>
             <TitleTopBar title="Lista de favoritos" fontSize={16} marginTop={0} />
@@ -120,7 +106,6 @@ class Home extends Component {
 
     renderListDecision = () => {
         const { text, favorites, resultsApi, loading } = this.state;
-        //if (loading === false) {
         if (loading) {
             return (<ActivityIndicator size='large' color='#FFF' />);
         }
@@ -134,9 +119,6 @@ class Home extends Component {
             console.log('aqui');
             return this.renderList();
         }
-        //  }
-        //  
-        // console.log(text);
     }
 
     render() {
@@ -205,4 +187,6 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+const mapStateToProps = state => ({ isFavorites: state.isFavorites });
+
+export default connect(mapStateToProps, null)(Home);

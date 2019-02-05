@@ -4,6 +4,11 @@ import {
     TouchableOpacity, Image, StyleSheet,
     ScrollView, ActivityIndicator
 } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+//actions
+import * as favoritesActions from './../redux/actions/isFavorites';
 
 //services
 import swapi from '../services/swapi';
@@ -22,6 +27,7 @@ class DetailsPerson extends Component {
 
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
             url: '',
             name: '',
@@ -101,11 +107,13 @@ class DetailsPerson extends Component {
 
     insertFavorites = (name, url) => {
         sql.insertFavorites(name, url);
+        this.props.onFavorite(true);
         this.setState({ isFavorites: true, exist: true });
     }
 
     deleteFavorites = (url) => {
         sql.deleteFavorites(url);
+        this.props.onFavorite(true);
         this.setState({ isFavorites: false });
     }
 
@@ -257,4 +265,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DetailsPerson;
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(favoritesActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(DetailsPerson);
