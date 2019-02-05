@@ -30,7 +30,7 @@ class Home extends Component {
             text: '',
             loading: true,
             data: [],
-            isConnected: false,
+            isConnected: '',
             favorites: [],
             resultsApi: 0,
             resultsSql: 0,
@@ -42,6 +42,7 @@ class Home extends Component {
 
     async componentDidMount() {
         this.getListFavorites();
+        this.isConn();
     }
 
     getListFavorites = () => {
@@ -64,9 +65,7 @@ class Home extends Component {
 
     isConn = () => {
         NetInfo.isConnected.fetch().then(isConnected => {
-            this.setState({
-                isConnected,
-            });
+            this.setState({ isConnected });
         });
     }
 
@@ -123,33 +122,36 @@ class Home extends Component {
 
     render() {
         return (
-            <View style={styles.view}>
-                <StatusBar hidden />
-                <View style={styles.topBar}>
-                    <TitleTopBar title="Star Wars APP" fontSize={35} marginTop={25} />
-                    <TextInput
-                        onSubmitEditing={(event) => {
-                            this.setState({
-                                text: event.nativeEvent.text,
-                                loading: true
-                            });
-                            this.find(event.nativeEvent.text);
-                        }}
-                        style={styles.textInput}
-                        placeholderTextColor='#CCC'
-                        placeholder='Digite o nome do personagem'
-                        onChange={(event) => {
-                            if (event.nativeEvent.text === '') {
-                                this.getListFavorites();
-                                this.setState({ text: event.nativeEvent.text, resultsApi: 0 });
-                            }
-                        }}
-                    />
-                </View>
-                <View style={styles.boxImg}>
-                    {this.renderListDecision()}
-                </View>
-            </View >
+            this.state.isConnected ?
+                <View style={styles.view}>
+                    <StatusBar hidden />
+
+                    <View style={styles.topBar}>
+                        <TitleTopBar title="Star Wars APP" fontSize={35} marginTop={25} />
+                        <TextInput
+                            onSubmitEditing={(event) => {
+                                this.setState({
+                                    text: event.nativeEvent.text,
+                                    loading: true
+                                });
+                                this.find(event.nativeEvent.text);
+                            }}
+                            style={styles.textInput}
+                            placeholderTextColor='#CCC'
+                            placeholder='Digite o nome do personagem'
+                            onChange={(event) => {
+                                if (event.nativeEvent.text === '') {
+                                    this.getListFavorites();
+                                    this.setState({ text: event.nativeEvent.text, resultsApi: 0 });
+                                }
+                            }}
+                        />
+                    </View>
+                    <View style={styles.boxImg}>
+                        {this.renderListDecision()}
+                    </View>
+                </View > :
+                <Text>Error</Text>
         );
     }
 
