@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import swapi from './../services/swapi';
 //imagem
 import C3PO from './../imgs/c3-po.png';
-
+import DarthVader from './../imgs/darth_vader.png';
 //componentes
 import ListItemsPeople from '../components/ListItemsPeople';
 import TitleTopBar from '../components/TitleTopBar';
@@ -23,12 +23,11 @@ import TitleTopBar from '../components/TitleTopBar';
 import sql from './../services/sqlitehelper';
 
 class Home extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             text: '',
-            loading: true,
+            loading: false,
             data: [],
             isConnected: '',
             favorites: [],
@@ -36,16 +35,15 @@ class Home extends Component {
             resultsSql: 0,
             isFavorites: false
         };
-
-        console.log(props);
     }
 
     async componentDidMount() {
-        this.getListFavorites();
         this.isConn();
+        this.getListFavorites();
     }
 
     getListFavorites = () => {
+        console.log('get list');
         try {
             sql.getAllFavorites().then((res) => {
                 this.setState({
@@ -115,7 +113,6 @@ class Home extends Component {
             return this.renderC3PO();
         }
         if (resultsApi === 1) {
-            console.log('aqui');
             return this.renderList();
         }
     }
@@ -148,10 +145,31 @@ class Home extends Component {
                         />
                     </View>
                     <View style={styles.boxImg}>
+                        {/* {this.props.isFavorites ? this.getListFavorites() : this.getListFavorites()} */}
                         {this.renderListDecision()}
                     </View>
                 </View > :
-                <Text>Error</Text>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'red'
+                    }}
+                >
+                    <Text style={{ fontSize: 30, color: '#fff' }}>Erro!</Text>
+                    <Image source={DarthVader} style={{ width: 300, height: 300 }} />
+                    <Text
+                        style={{ fontSize: 30, color: '#fff' }}
+                    >
+                        Erro: Você esta sem Internet!
+                    </Text>
+                    <Text
+                        style={{ fontSize: 30, color: '#fff' }}
+                    >
+                        Abra novamente o APP para tentar testa a conexão.
+                    </Text>
+                </View>
         );
     }
 
@@ -189,6 +207,6 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => ({ isFavorites: state.isFavorites });
+const mapStateToProps = state => ({ isFavorites: state });
 
 export default connect(mapStateToProps, null)(Home);

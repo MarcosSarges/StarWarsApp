@@ -1,8 +1,9 @@
 
-export default function isFavorites(state = '', action) {
+export default function isFavorites(state = ' ', action) {
     switch (action.type) {
         case 'FAVORITE':
-            return action.isFavorites;
+            console.log(action, '  =  ', state);
+            return !action.isFavorites;
         default:
             return state;
     }

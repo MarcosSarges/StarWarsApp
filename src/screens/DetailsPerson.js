@@ -27,7 +27,6 @@ class DetailsPerson extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             url: '',
             name: '',
@@ -107,14 +106,14 @@ class DetailsPerson extends Component {
 
     insertFavorites = (name, url) => {
         sql.insertFavorites(name, url);
-        this.props.onFavorite(true);
         this.setState({ isFavorites: true, exist: true });
+        this.props.onFavorite(this.state.isFavorites);
     }
 
     deleteFavorites = (url) => {
         sql.deleteFavorites(url);
-        this.props.onFavorite(true);
         this.setState({ isFavorites: false });
+        this.props.onFavorite(this.state.isFavorites);
     }
 
     exitsFavorites = (name) => {
@@ -265,8 +264,8 @@ const styles = StyleSheet.create({
     }
 });
 
-
+const mapStateToProps = state => ({ isFavorites: state });
 const mapDispatchToProps = dispatch =>
     bindActionCreators(favoritesActions, dispatch);
 
-export default connect(null, mapDispatchToProps)(DetailsPerson);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsPerson);
